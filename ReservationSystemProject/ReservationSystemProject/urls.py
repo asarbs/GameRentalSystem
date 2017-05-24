@@ -14,8 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
+from django.conf.urls import include
 from django.contrib import admin
 
+from ReservationSystemApp import views as ReservationSystemApp_views
+
 urlpatterns = [
+    url(r'^$', ReservationSystemApp_views.main, name="main"),
+    url(r'ReservationSystemApp/', include('ReservationSystemApp.urls')),
     url(r'^admin/', admin.site.urls),
 ]
