@@ -1,4 +1,4 @@
 *.pyc
 ReservationSystemEnv
 .idea
-*.sqlite
+*.sqlite3
