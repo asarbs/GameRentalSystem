@@ -27,21 +27,21 @@
 body
 {
     background-color : #FFFFFF;
-    font-family: 'Droid Sans', sans-serif;
+    font-family: 'Verdana', sans-serif;
     font-size : 12px;
-    color : #666666;
+    color : #000000;
     text-align: left;
     height:100%
 }
 
 a
 {
-    color:#004363;
+    color: #465471;
     text-decoration:none;
 }
 a:hover
 {
-    color:#004363;
+    color:#465471;
     text-decoration: underline;
 }
 
@@ -91,5 +91,22 @@ textarea {
     font-size: 11px;
     color: #004363;
     width: 700px;
+}
+
+div#main_top_bar
+{
+    background-color: #b3b3b3;
+}
+
+div#main_top_bar h1
+{
+    padding: 10px;
+    font-size : 16px;
+}
+
+div#main_menu
+{
+    padding: 10px;
+    background-color: #d9d9d9;
 }
 
