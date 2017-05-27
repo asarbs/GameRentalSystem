@@ -1,0 +1,35 @@
+{% extends "index.html" %}
+{% block main %}
+
+<!--<form action="{% url "NewGame" %}" method="POST">-->
+  <!--{% csrf_token %}-->
+    <!--<table class="paleblue">-->
+    <!--{{ form }}-->
+    <!--</table>-->
+  <!--<input id="save_contact" type="submit" value="Save" />-->
+<!--</form>-->
+
+
+
+        <form action="{% url "NewGame" %}" method="post">
+            {% csrf_token %}
+            <div>
+                {{ form.as_p }}
+            </div>
+            <fieldset>
+                <legend>Game Copy</legend>
+                {{ gameCopyItemFormset.management_form }}
+                {{ gameCopyItemFormset.non_form_errors }}
+                {% for gameCopyItemForm in gameCopyItemFormset %}
+                    {{ gameCopyItemForm.as_p }}
+                    <div class="inline">
+                        {{ gameCopyItemForm.description.errors }}
+                        {{ gameCopyItemForm.description.label_tag }}
+                        {{ gameCopyItemForm.description }}
+                    </div>
+                {% endfor %}
+            </fieldset>
+            <input type="submit" value="Add recipe" class="submit" />
+        </form>
+
+{% endblock %}
