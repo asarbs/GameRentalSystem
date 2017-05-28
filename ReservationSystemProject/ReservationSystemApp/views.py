@@ -34,6 +34,15 @@ class ClientDetails(DetailView):
     model = Client
 
 
+class ClientList(ListView):
+    model = Client
+
+
+def DeleteClient(request, pk):
+    Client(id=pk).delete()
+    return HttpResponseRedirect(reverse("ClientList"))
+
+
 class NewGameView(CreateView):
     model = Game
     form_class = GameForm

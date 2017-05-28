@@ -1,0 +1,42 @@
+{% extends "index.html" %}
+{% block main %}
+
+<table class="paleblue">
+    <tr>
+        <th>
+            Name and Surname
+        </th>
+        <th>
+            Age
+        </th>
+        <th>
+            Gender
+        </th>
+        <th>
+            Barcode
+        </th>
+        <th>
+            Actions
+        </th>
+    </tr>
+    {% for object in object_list %}
+    <tr tr class="{% cycle 'odd' 'even' %}">
+        <td>
+            {{ object }}
+        </td>
+        <td>
+            {{ object.age }}
+        </td>
+        <td>
+            {{ object.gender }}
+        </td>
+        <td>
+            {{ object.barcode }}
+        </td>
+        <td>
+            <a href="{% url "DeleteClient" pk=object.id %}" class="button">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
