@@ -1,12 +1,12 @@
 {% extends "index.html" %}
 {% block main %}
-
+<h2>New Client</h2>
 <form action="{% url "NewClient" %}" method="POST">
   {% csrf_token %}
     <table class="paleblue">
     {{ form }}
     </table>
-  <input id="save_contact" type="submit" value="Save" />
+  <input id="save_contact" type="submit" value="save" />
 </form>
 
 {% endblock %}

@@ -76,7 +76,7 @@ a.button:hover
 select, input {
     border: 1px solid #AAA;
     background: #E6EEF4;
-    font-size: 11px;
+    font-size: 12px;
     color: #004363;
     width: 200px;
 }
@@ -84,8 +84,24 @@ select.small, input.small
 {
     width: 40px;
 }
+fieldset
+{
+  padding: 10px;
+  border: 1px solid #AAA;
+}
 
-textarea {
+label
+{
+  float:left;
+  width:25%;
+  margin-right:15px;
+  padding-top: 10px;
+  text-align:right;
+  font-weight:bold;
+}
+
+textarea
+{
     border: 1px solid #AAA;
     background: #CCC;
     font-size: 11px;
@@ -108,5 +124,10 @@ div#main_menu
 {
     padding: 10px;
     background-color: #d9d9d9;
+}
+
+div#main
+{
+    padding: 15px;
 }
 

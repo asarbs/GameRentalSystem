@@ -7,11 +7,13 @@ from django.shortcuts import render
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 
 from form import GameForm
 from form import GameCopyItemFormset
 from models import Client
 from models import Game
+from models import GameCopy
 
 
 # Create your views here.
@@ -25,7 +27,11 @@ class NewClientView(CreateView):
     fields = ['name', 'surname', 'age', 'gender', 'barcode']
 
     def get_success_url(self):
-        return reverse("/", args=())
+        return reverse("ClientDetails", args=(self.object.id,))
+
+
+class ClientDetails(DetailView):
+    model = Client
 
 
 class NewGameView(CreateView):
@@ -83,4 +89,20 @@ class NewGameView(CreateView):
             self.get_context_data(form=form, gameCopyItemFormset=gameCopyItemFormset))
 
     def get_success_url(self):
-        return reverse("/", args=())
+        return reverse("GameDetails", args=(self.object.id,))
+
+
+class GameDetails(DetailView):
+    model = Game
+
+    def get_object(self, queryset=None):
+        object = super(GameDetails,self).get_object()
+        gameCopy = GameCopy.objects.filter(game=object)
+        object.gameCopy = gameCopy
+
+        return object
+
+
+class GameList(ListView):
+    queryset = Game.objects.order_by("number")
+    model = Game

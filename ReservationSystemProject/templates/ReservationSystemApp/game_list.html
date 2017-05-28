@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+{% block main %}
+
+<table class="paleblue">
+    <tr>
+        <th>
+            #
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Actions
+        </th>
+    </tr>
+    {% for game in object_list %}
+    <tr tr class="{% cycle 'odd' 'even' %}">
+        <td>
+            {{ game.number }}
+        </td>
+        <td>
+            <a href="{% url "GameDetails" pk=game.id %}">{{ game.name }}</a>
+        </td>
+        <td>
+
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
