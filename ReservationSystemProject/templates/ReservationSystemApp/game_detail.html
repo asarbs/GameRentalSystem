@@ -2,7 +2,28 @@
 {% block main %}
 
 <h2>Game: #{{object.number}} {{ object.name }}</h2>
+<br />
+<a href="{% url "GameUpdate" pk=object.id  %}" class="button">Edit</a>
+<br />
+<br />
 <table class="paleblue">
+    <tr>
+        <th>
+            Barcode
+        </th>
+        <th>
+            Weight
+        </th>
+        <th>
+            Comment
+        </th>
+        <th>
+            State
+        </th>
+        <th>
+            Action
+        </th>
+    </tr>
     {% for gamecopy in object.gameCopy %}
         <tr>
             <td>
@@ -17,8 +38,32 @@
             <td>
                 {{ gamecopy.state }}
             </td>
+            <td>
+                <a href="{% url "DeleterGameCopy" pk=gamecopy.id %}?game_id={{ object.id }}" class="button">Delete</a>
+            </td>
         </tr>
     {% endfor %}
 </table>
+
+<h2>New Game</h2>
+<form action="{% url "NewGameCopy" %}?game_id={{ object.id }}" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend>Game Copy</legend>
+        {{ object.gameCopyItemFormset.management_form }}
+        {{ object.gameCopyItemFormset.non_form_errors }}
+        {% for gameCopyItemForm in object.gameCopyItemFormset %}
+        <table class="paleblue">
+            {{ gameCopyItemForm }}
+        </table>
+        <div class="inline">
+            {{ gameCopyItemForm.description.errors }}
+            {{ gameCopyItemForm.description.label_tag }}
+            {{ gameCopyItemForm.description }}
+        </div>
+        {% endfor %}
+    </fieldset>
+    <input type="submit" value="save" class="button" />
+</form>
 
 {% endblock %}

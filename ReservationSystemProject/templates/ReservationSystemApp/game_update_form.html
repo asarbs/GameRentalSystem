@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+{% block main %}
+
+
+
+<h2>Edit Game</h2>
+
+
+<form action="{% url "GameUpdate" pk=object.id %}" method="post">
+    {% csrf_token %}
+    <table class="paleblue">
+        {{ form }}
+    </table>
+    <input type="submit" value="save" class="button" />
+</form>
+
+{% endblock %}

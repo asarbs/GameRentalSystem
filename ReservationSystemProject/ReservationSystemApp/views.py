@@ -39,6 +39,7 @@ class NewGameView(CreateView):
     form_class = GameForm
     template_name = 'ReservationSystemApp/game_form.html'
 
+
     def get(self, request, *args, **kwargs):
         """
         Handles GET requests and instantiates blank versions of the form
@@ -60,9 +61,6 @@ class NewGameView(CreateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         gameCopyItemFormset = GameCopyItemFormset(self.request.POST)
-        print(gameCopyItemFormset.is_valid(), gameCopyItemFormset.total_error_count())
-        for error in gameCopyItemFormset.errors:
-            print("A", error)
 
         if form.is_valid() and gameCopyItemFormset.is_valid():
             return self.form_valid(form, gameCopyItemFormset)
@@ -99,10 +97,34 @@ class GameDetails(DetailView):
         object = super(GameDetails,self).get_object()
         gameCopy = GameCopy.objects.filter(game=object)
         object.gameCopy = gameCopy
-
+        object.gameCopyItemFormset = GameCopyItemFormset()
         return object
 
 
 class GameList(ListView):
     queryset = Game.objects.order_by("number")
     model = Game
+
+
+class GameEdit(UpdateView):
+    model = Game
+    fields = ['name', 'number']
+    template_name_suffix = '_update_form'
+
+    def get_success_url(self):
+        return reverse("GameDetails", args=(self.object.id,))
+
+
+def NewGameCopy(request):
+    game = Game.objects.get(id=request.GET['game_id'])
+    GameCopy(barcode=request.POST['gamecopy_set-0-barcode'],
+                        weight=request.POST['gamecopy_set-0-weight'],
+                        comments=request.POST['gamecopy_set-0-comments'],
+                        state=request.POST['gamecopy_set-0-state'],
+                        game=game).save()
+    return HttpResponseRedirect(reverse("GameDetails", args=(request.GET['game_id'],)))
+
+
+def DeleteGamesCopy(request, pk):
+    GameCopy(id=pk).delete()
+    return HttpResponseRedirect(reverse("GameDetails", args=(request.GET['game_id'],)))
