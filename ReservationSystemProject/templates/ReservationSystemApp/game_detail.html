@@ -4,6 +4,7 @@
 <h2>Game: #{{object.number}} {{ object.name }}</h2>
 <br />
 <a href="{% url "GameUpdate" pk=object.id  %}" class="button">Edit</a>
+<a href="{% url "DeleteGame" pk=object.id  %}" class="button">Delete</a>
 <br />
 <br />
 <table class="paleblue">

@@ -128,3 +128,8 @@ def NewGameCopy(request):
 def DeleteGamesCopy(request, pk):
     GameCopy(id=pk).delete()
     return HttpResponseRedirect(reverse("GameDetails", args=(request.GET['game_id'],)))
+
+
+def GameDelete(reques, pk):
+    Game(id=pk).delete()
+    return HttpResponseRedirect(reverse("GamesList"))

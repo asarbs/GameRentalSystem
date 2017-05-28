@@ -13,5 +13,6 @@ urlpatterns = [
     url("GameUpdate/(?P<pk>\d+)/", views.GameEdit.as_view(), name="GameUpdate"),
     url("GameDetails/(?P<pk>\d+)/", views.GameDetails.as_view(), name="GameDetails"),
     url("NewGameCopy/", views.NewGameCopy, name="NewGameCopy"),
-    url("DeleterGameCopy/(?P<pk>\d+)/", views.DeleteGamesCopy, name="DeleterGameCopy")
+    url("DeleterGameCopy/(?P<pk>\d+)/", views.DeleteGamesCopy, name="DeleterGameCopy"),
+    url("DeleteGame/(?P<pk>\d+)/", views.GameDelete, name="DeleteGame")
     ]
