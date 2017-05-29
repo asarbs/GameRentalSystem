@@ -13,7 +13,7 @@ class Client(models.Model):
     surname = models.CharField(max_length=256, verbose_name="Surname")
     age = models.IntegerField(verbose_name="Age")
     gender = models.CharField(max_length=5, choices=GENDER, verbose_name="Gender", default="Men")
-    barcode = models.IntegerField(verbose_name="Barcode", default="0")
+    barcode = models.IntegerField(verbose_name="Barcode", default="0", unique=True)
 
     def __str__(self):
         return u'{0} {1}'.format(self.name, self.surname)
@@ -35,7 +35,7 @@ class Game(models.Model):
 
 class GameCopy(models.Model):
     STATE = (("Loaned", "Loaned"), ("Free", "Free"))
-    barcode = models.IntegerField(verbose_name="Barcode", default="0")
+    barcode = models.IntegerField(verbose_name="Barcode", default="0", unique=True)
     weight = models.IntegerField(verbose_name="Weight", default="0")
     comments = models.TextField(blank=True, verbose_name="Comments")
     state = models.CharField(max_length=6, choices=STATE, default="Free", verbose_name="State")

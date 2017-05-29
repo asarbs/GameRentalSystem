@@ -1,0 +1,42 @@
+{% extends "index.html" %}
+{% block main %}
+
+<h2>Rental</h2>
+
+<form action="{% url "Rental" %}" method="post">
+    {% csrf_token %}
+    <p>
+        <label for="gameCopyBarcode">Game Copy barcode:</label>
+        <input type="text" name="gameCopyBarcode" id="gameCopyBarcode" value="{{ gameCopyBarcode_val }}" />
+        <ul class="error_list">
+        {% for error in gameCopyBarcode_errors %}
+            <li class="error">{{ error }}</li>
+        {% endfor %}
+        </ul>
+    </p>
+    <p>
+        <label for="clientBarcode">Client barcode:</label>
+        <input type="text" name="clientBarcode" id="clientBarcode" value="{{ clientBarcode_val }}"/>
+        <ul class="error_list">
+        {% for error in clientBarcode_errors %}
+            <li class="error">{{ error }}</li>
+        {% endfor %}
+        </ul>
+    </p>
+    <p>
+        <label for="comment">Comment:</label>
+        <textarea name="comment" id="comment">{{ comment_val }}</textarea>
+    </p>
+    <p>
+        <label for="gameCopyWeight">Game Copy weight:</label>
+        <input type="text" name="gameCopyWeight" id="gameCopyWeight" value="{{ gameCopyWeight_val }}"/>
+        <ul class="error_list">
+        {% for error in gameCopyWeight_errors %}
+            <li class="error">{{ error }}</li>
+        {% endfor %}
+        </ul>
+    </p>
+    <input type="submit" value="Submit" />
+</form>
+
+{% endblock %}

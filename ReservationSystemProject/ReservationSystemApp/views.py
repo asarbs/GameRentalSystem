@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -139,6 +140,53 @@ def DeleteGamesCopy(request, pk):
     return HttpResponseRedirect(reverse("GameDetails", args=(request.GET['game_id'],)))
 
 
-def GameDelete(reques, pk):
+def GameDelete(request, pk):
     Game(id=pk).delete()
     return HttpResponseRedirect(reverse("GamesList"))
+
+
+def Rental(request):
+    if request.method == 'POST':
+        values = {"gameCopyBarcode_val": request.POST['gameCopyBarcode'],
+                  "clientBarcode_val": request.POST['clientBarcode'],
+                  "comment_val": request.POST['comment'],
+                  "gameCopyWeight_val":  request.POST['gameCopyWeight']}
+        errors = {"gameCopyBarcode_errors": [],
+                  "clientBarcode_errors": [],
+                  "gameCopyWeight_errors": []}
+
+        if checkIfBarcodesAreEmpty(errors, request):
+            values.update(errors)
+            return render(request, "ReservationSystemApp/Rental_form.html",
+                          values)
+
+        try:
+            gameCopy = GameCopy.objects.get(barcode=request.POST['gameCopyBarcode'])
+        except ObjectDoesNotExist as x:
+            errors['gameCopyBarcode_errors'].append("Copy not found")
+        try:
+            clinet = Client.objects.get(barcode=request.POST['clientBarcode'])
+        except ObjectDoesNotExist as x:
+            errors['clientBarcode_errors'].append("Client not found")
+
+        gameCopy.weight = request.POST['gameCopyWeight']
+        gameCopy.comments = request.POST['comment']
+        gameCopy.state = GameCopy.STATE[0][0]
+        gameCopy.save()
+
+        return HttpResponseRedirect(reverse("GameDetails", args=(gameCopy.game.id,)))
+    return render(request, "ReservationSystemApp/Rental_form.html", {})
+
+
+def checkIfBarcodesAreEmpty(errors, request):
+    result = False
+    if len(request.POST['gameCopyBarcode']) == 0:
+        errors['gameCopyBarcode_errors'].append("This field can't be empty")
+        result = True
+    if len(request.POST['clientBarcode']) == 0:
+        errors['clientBarcode_errors'].append("This field can't be empty")
+        result = True
+    if len(request.POST['gameCopyWeight']) == 0:
+        errors['gameCopyWeight_errors'].append("This field can't be empty")
+        result = True
+    return result
