@@ -187,9 +187,18 @@ def Rental(request):
         except ObjectDoesNotExist as x:
             errors['clientBarcode_errors'].append("Client not found")
 
+        if gameCopy.state == GameCopy.STATE[0][0]:
+            errors['gameCopyBarcode_errors'].append("Game rented")
+
+        print()
+        if len(errors['gameCopyBarcode_errors']) > 0 or len(errors['clientBarcode_errors']) > 0 or len(errors['gameCopyWeight_errors']) > 0:
+            values.update(errors)
+            return render(request, "ReservationSystemApp/Rental_form.html", values)
+
         gameCopy.weight = request.POST['gameCopyWeight']
         gameCopy.comments = request.POST['comment']
         gameCopy.state = GameCopy.STATE[0][0]
+        gameCopy.client = clinet
         gameCopy.save()
 
         return HttpResponseRedirect(reverse("GameDetails", args=(gameCopy.game.id,)))
@@ -226,5 +235,6 @@ def makeReturn(request, pk):
     gameCopy.weight = 0
     gameCopy.comments = ""
     gameCopy.state = GameCopy.STATE[1][0]
+    gameCopy.client = None
     gameCopy.save()
     return HttpResponseRedirect(reverse("GameDetails", args=(gameCopy.game.id,)))

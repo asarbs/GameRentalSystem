@@ -22,6 +22,9 @@
             State
         </th>
         <th>
+            Client
+        </th>
+        <th>
             Action
         </th>
     </tr>
@@ -38,6 +41,9 @@
             </td>
             <td>
                 {{ gamecopy.state }}
+            </td>
+            <td>
+                {{ gamecopy.client|default_if_none:"" }}
             </td>
             <td>
                 <a href="{% url "DeleterGameCopy" pk=gamecopy.id %}?game_id={{ object.id }}" class="button">Delete</a>

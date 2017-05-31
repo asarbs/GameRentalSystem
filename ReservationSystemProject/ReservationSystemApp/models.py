@@ -40,6 +40,7 @@ class GameCopy(models.Model):
     comments = models.TextField(blank=True, verbose_name="Comments")
     state = models.CharField(max_length=6, choices=STATE, default="Free", verbose_name="State")
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, verbose_name="Client", blank=True, null=True)
 
 
 class Event(models.Model):
