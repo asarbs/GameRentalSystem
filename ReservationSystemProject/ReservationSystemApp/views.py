@@ -145,6 +145,25 @@ def GameDelete(request, pk):
     return HttpResponseRedirect(reverse("GamesList"))
 
 
+def checkIfBarcodesAreEmpty(errors, request):
+    result = False
+    result = checkIfGameBarcodeAreEmpty(errors, request)
+    if len(request.POST['clientBarcode']) == 0:
+        errors['clientBarcode_errors'].append("This field can't be empty")
+        result = True
+    if len(request.POST['gameCopyWeight']) == 0:
+        errors['gameCopyWeight_errors'].append("This field can't be empty")
+        result = True
+    return result
+
+
+def checkIfGameBarcodeAreEmpty(errors, request):
+    if len(request.POST['gameCopyBarcode']) == 0:
+        errors['gameCopyBarcode_errors'].append("This field can't be empty")
+        return True
+    return False
+
+
 def Rental(request):
     if request.method == 'POST':
         values = {"gameCopyBarcode_val": request.POST['gameCopyBarcode'],
@@ -159,7 +178,6 @@ def Rental(request):
             values.update(errors)
             return render(request, "ReservationSystemApp/Rental_form.html",
                           values)
-
         try:
             gameCopy = GameCopy.objects.get(barcode=request.POST['gameCopyBarcode'])
         except ObjectDoesNotExist as x:
@@ -178,15 +196,35 @@ def Rental(request):
     return render(request, "ReservationSystemApp/Rental_form.html", {})
 
 
-def checkIfBarcodesAreEmpty(errors, request):
-    result = False
-    if len(request.POST['gameCopyBarcode']) == 0:
-        errors['gameCopyBarcode_errors'].append("This field can't be empty")
-        result = True
-    if len(request.POST['clientBarcode']) == 0:
-        errors['clientBarcode_errors'].append("This field can't be empty")
-        result = True
-    if len(request.POST['gameCopyWeight']) == 0:
-        errors['gameCopyWeight_errors'].append("This field can't be empty")
-        result = True
-    return result
+def Return(request):
+    if request.method == 'POST':
+        values = {"gameCopyBarcode_errors": [],
+                  "gameCopyBarcode_val": request.POST['gameCopyBarcode'],
+                  "gameCopy": None}
+        if checkIfGameBarcodeAreEmpty(values, request):
+            return render(request, "ReservationSystemApp/Return_form.html",
+                          values)
+        try:
+            gameCopy = GameCopy.objects.get(barcode=request.POST['gameCopyBarcode'])
+        except ObjectDoesNotExist as x:
+            values['gameCopyBarcode_errors'].append("Game copy not found")
+            return render(request, "ReservationSystemApp/Return_form.html",
+                          values)
+        if gameCopy.state == GameCopy.STATE[1][0]:
+            values['gameCopyBarcode_errors'].append("Game not rented")
+            return render(request, "ReservationSystemApp/Return_form.html",
+                          values)
+
+        values['gameCopy'] = gameCopy
+        return render(request, "ReservationSystemApp/Return_form.html", values)
+    return render(request, "ReservationSystemApp/Return_form.html", {})
+
+
+def makeReturn(request, pk):
+    print("makeReturn")
+    gameCopy = GameCopy.objects.get(id=pk)
+    gameCopy.weight = 0
+    gameCopy.comments = ""
+    gameCopy.state = GameCopy.STATE[1][0]
+    gameCopy.save()
+    return HttpResponseRedirect(reverse("GameDetails", args=(gameCopy.game.id,)))
