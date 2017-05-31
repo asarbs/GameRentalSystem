@@ -13,7 +13,7 @@ from models import Client
 
 class GameCopyInline(admin.StackedInline):
     model = GameCopy
-    extra = 1
+    extra = 0
 
 
 class GameAdmin(admin.ModelAdmin):
