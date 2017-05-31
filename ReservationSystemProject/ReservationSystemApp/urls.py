@@ -9,6 +9,7 @@ urlpatterns = [
     url("NewClient/", views.NewClientView.as_view(), name="NewClient"),
     url("ClientDetails/(?P<pk>\d+)/", views.ClientDetails.as_view(), name="ClientDetails"),
     url("ClientList/", views.ClientList.as_view(), name="ClientList"),
+    url("ClientEdit/(?P<pk>\d+)/", views.ClientEdit.as_view(), name="ClientEdit"),
     url("DeleteClient/(?P<pk>\d+)/", views.DeleteClient, name="DeleteClient"),
     url("NewGame/", views.NewGameView.as_view(), name="NewGame"),
     url("GameList/", views.GameList.as_view(), name="GamesList"),

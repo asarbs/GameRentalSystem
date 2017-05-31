@@ -44,6 +44,15 @@ def DeleteClient(request, pk):
     return HttpResponseRedirect(reverse("ClientList"))
 
 
+class ClientEdit(UpdateView):
+    model = Client
+    fields = ['name', 'surname', 'age', 'gender', 'barcode']
+    template_name_suffix = '_update_form'
+
+    def get_success_url(self):
+        return reverse("ClientDetails", args=(self.object.id,))
+
+
 class NewGameView(CreateView):
     model = Game
     form_class = GameForm

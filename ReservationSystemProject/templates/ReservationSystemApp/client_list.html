@@ -35,6 +35,7 @@
         </td>
         <td>
             <a href="{% url "DeleteClient" pk=object.id %}" class="button">Delete</a>
+            <a href="{% url "ClientEdit" pk=object.id %}" class="button">Edit</a>
         </td>
     </tr>
     {% endfor %}
