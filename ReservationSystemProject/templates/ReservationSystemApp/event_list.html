@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+{% block main %}
+
+<table class="paleblue">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Date
+        </th>
+        <th>
+            Actions
+        </th>
+    </tr>
+    {% for object in object_list %}
+    <tr tr class="{% cycle 'odd' 'even' %}">
+        <td>
+            {{ object }}
+        </td>
+        <td>
+            {{ object.date }}
+        </td>
+        <td>
+            <a href="{% url "EventUpdate" pk=object.id %}" class="button">Edit</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

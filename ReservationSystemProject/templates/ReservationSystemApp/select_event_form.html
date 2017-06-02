@@ -1,0 +1,15 @@
+{% extends "index.html" %}
+{% block main %}
+
+<h2>Select Event</h2>
+<form action="{% url "SelectEvent" %}" method="POST">
+  {% csrf_token %}
+    <select name="slected_event">
+        {% for event in events %}
+        <option value="{{ event.id }}">{{ event }}</option>
+        {% endfor %}
+    </select>
+  <input id="save_contact" type="submit" value="select" />
+</form>
+
+{% endblock %}

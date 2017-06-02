@@ -12,9 +12,11 @@ from django.views.generic.detail import DetailView
 
 from form import GameForm
 from form import GameCopyItemFormset
+from form import EventForm
 from models import Client
 from models import Game
 from models import GameCopy
+from models import Event
 
 
 # Create your views here.
@@ -88,8 +90,8 @@ class NewGameView(CreateView):
 
     def form_valid(self, form, gameCopyItemFormset):
         """
-        Called if all forms are valid. Creates a Recipe instance along with
-        associated Ingredients and Instructions and then redirects to a
+        Called if all forms are valid. Creates a Game instance along with
+        associated GameCopy and then redirects to a
         success page.
         """
         self.object = form.save()
@@ -239,7 +241,6 @@ def Return(request):
 
 
 def makeReturn(request, pk):
-    print("makeReturn")
     gameCopy = GameCopy.objects.get(id=pk)
     gameCopy.weight = 0
     gameCopy.comments = ""
@@ -247,3 +248,52 @@ def makeReturn(request, pk):
     gameCopy.client = None
     gameCopy.save()
     return HttpResponseRedirect(reverse("GameDetails", args=(gameCopy.game.id,)))
+
+
+class NewEvent(CreateView):
+    model = Event
+    form_class = EventForm
+    template_name = 'ReservationSystemApp/event_form.html'
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance and its inline
+        formsets with the passed POST variables and then checking them for
+        validity.
+        """
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+
+        if form.is_valid():
+            self.object = form.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse("EventDetails", args=(self.object.id,))
+
+
+class EventDetails(DetailView):
+    model = Event
+
+
+class ListEvent(ListView):
+    model = Event
+
+
+class EventUpdate(UpdateView):
+    model = Event
+    form_class = EventForm
+    template_name = 'ReservationSystemApp/event_update_form.html'
+
+    def get_success_url(self):
+        return reverse("EventDetails", args=(self.object.id,))
+
+
+def SelectEvent(request):
+    if request.method == 'POST':
+        request.session['event_id'] = request.POST['slected_event']
+    events = Event.objects.all()
+    return render(request, "ReservationSystemApp/select_event_form.html", {"events": events})

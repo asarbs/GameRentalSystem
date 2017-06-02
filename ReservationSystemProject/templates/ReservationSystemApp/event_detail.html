@@ -1,0 +1,7 @@
+{% extends "index.html" %}
+{% block main %}
+
+<h2>Event: {{ object.name }} {{ object.date }}</h2>
+<br /><br />
+<a href="{% url "EventUpdate" pk=object.id %}" class="button">Edit</a>
+{% endblock %}

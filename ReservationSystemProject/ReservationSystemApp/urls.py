@@ -20,5 +20,10 @@ urlpatterns = [
     url("DeleteGame/(?P<pk>\d+)/", views.GameDelete, name="DeleteGame"),
     url("Rental/", views.Rental, name="Rental"),
     url("makeReturn/(?P<pk>\d+)/", views.makeReturn, name="makeReturn"),
-    url("formReturn/", views.Return, name="Return")
+    url("formReturn/", views.Return, name="Return"),
+    url("NewEvent/", views.NewEvent.as_view(), name="NewEvent"),
+    url("EventDetails/(?P<pk>\d+)/", views.EventDetails.as_view(), name="EventDetails"),
+    url("ListEvent", views.ListEvent.as_view(), name="ListEvent"),
+    url("EventUpdate/(?P<pk>\d+)/", views.EventUpdate.as_view(), name="EventUpdate"),
+    url("SelectEvent/", views.SelectEvent, name="SelectEvent")
     ]
