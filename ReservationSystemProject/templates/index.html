@@ -15,7 +15,7 @@
 <div id="main_menu">
     {% if user.is_authenticated %}
     <a href="{% url "addOperator" %}"  class="button">New Operator</a>
-    <a href="" class="button">Operator List</a>
+    <a href="{% url "operatorList" %}" class="button">Operator List</a>
     <a href="{% url "NewEvent" %}" class="button">New Event</a>
     <a href="{% url "ListEvent" %}" class="button">Event List</a>
     <a href="{% url "NewGame" %}" class="button">New Game</a>

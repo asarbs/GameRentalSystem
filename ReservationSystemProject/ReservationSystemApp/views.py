@@ -11,11 +11,13 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 
 from form import GameForm
 from form import GameCopyItemFormset
 from form import EventForm
 from form import UserForm
+from form import ChangePasswordForm
 from models import Client
 from models import Game
 from models import GameCopy
@@ -311,16 +313,45 @@ def SelectEvent(request):
     return render(request, "ReservationSystemApp/select_event_form.html", {"events": events})
 
 
+@login_required(login_url='/login/')
 def addUser(request):
     if request.method == 'POST':
         uf = UserForm(request.POST, prefix='user')
         if uf.is_valid():
             user = uf.save()
-            return HttpResponseRedirect("/tc_player/addUserConfirm/")
+            return HttpResponseRedirect("/")
     else:
         uf = UserForm(prefix='user')
     return render(request, 'ReservationSystemApp/addUser.html', {"form": uf})
 
 
+@login_required(login_url='/login/')
 def changePassword(request):
-    pass
+    if request.method == 'POST':
+        changePasswordForm = ChangePasswordForm(data=request.POST, user=request.user)
+        if changePasswordForm.is_valid():
+            changePasswordForm.save()
+            return HttpResponseRedirect("/logout/")
+    else:
+        changePasswordForm = ChangePasswordForm(user=request.user)
+    return render(request, "ReservationSystemApp/changePassword.html", {"form": changePasswordForm})
+
+
+class OperatorList(ListView):
+    model = User
+
+
+@login_required(login_url='/login')
+def DeactivateOperator(request, pk):
+    user = User.objects.get(id=pk)
+    user.is_active = False
+    user.save()
+    return HttpResponseRedirect(reverse('operatorList'))
+
+
+@login_required(login_url='/login')
+def ActivateOperator(request, pk):
+    user = User.objects.get(id=pk)
+    user.is_active = True
+    user.save()
+    return HttpResponseRedirect(reverse('operatorList'))

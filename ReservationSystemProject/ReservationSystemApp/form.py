@@ -4,6 +4,7 @@ from django.forms import ModelForm
 from django.forms import CharField
 from django.forms import inlineformset_factory
 from django.forms import PasswordInput
+from django.forms import Form
 from django.contrib.auth.models import User
 
 from models import Game
@@ -51,3 +52,21 @@ class UserForm(ModelForm):
         if commit:
             user.save()
         return user
+
+class ChangePasswordForm(Form):
+    new_password = CharField(widget=PasswordInput(), label="New Password")
+    new_password_confirm = CharField(widget=PasswordInput(), label="Confirm")
+
+    def __init__(self, user, *args, **kwargs):
+        super(ChangePasswordForm, self).__init__(*args, **kwargs)
+        self.user = user
+
+    def clean(self):
+        if not self.cleaned_data.get('new_password') == self.cleaned_data.get('new_password_confirm'):
+            self.add_error('new_password_confirm', "Passwords do not match")
+
+    def save(self, commit=True):
+        self.user.set_password(self.cleaned_data["new_password"])
+        if commit:
+            self.user.save()
+        return self.user

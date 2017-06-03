@@ -21,4 +21,5 @@ def selected_event(context, request, user):
 def login(context, user):
     if user.is_anonymous():
         return mark_safe(u'<a href="{0}" class="button">Login</a>'.format(reverse("login", args=())))
-    return mark_safe(u'<a href="{0}" class="button">Logout</a>'.format(reverse("logout", args=())))
+    return mark_safe(u'User: {} <a href="{}" class="button">Logout</a><a href="{}" class="button">Change password</a>'.
+                     format(user, reverse("logout"), reverse("changePassword") ))

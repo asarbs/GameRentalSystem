@@ -26,6 +26,9 @@ urlpatterns = [
     url("ListEvent", views.ListEvent.as_view(), name="ListEvent"),
     url("EventUpdate/(?P<pk>\d+)/", views.EventUpdate.as_view(), name="EventUpdate"),
     url("SelectEvent/", views.SelectEvent, name="SelectEvent"),
-    url(r'^addUser$', views.addUser,  name="addOperator"),
-    url(r'changePassword/', views.changePassword, name="changePassword"),
+    url('^addUser$', views.addUser,  name="addOperator"),
+    url('changePassword/', views.changePassword, name="changePassword"),
+    url('operatorList/', views.OperatorList.as_view(), name="operatorList"),
+    url('deactivateOperator/(?P<pk>\d+)/', views.DeactivateOperator, name="deactivateOperator"),
+    url('activateOperator/(?P<pk>\d+)/', views.ActivateOperator, name="activateOperator")
     ]
