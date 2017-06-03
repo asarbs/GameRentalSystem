@@ -7,11 +7,13 @@
     </div>
     <div id="selected_event">
         {% selected_event request user %}
+        {% login user %}
     </div>
     <div class="clear"></div>
 
 </div>
 <div id="main_menu">
+    {% if user.is_authenticated %}
     <a href="" class="button">New Operator</a>
     <a href="" class="button">Operator List</a>
     <a href="{% url "NewEvent" %}" class="button">New Event</a>
@@ -23,6 +25,7 @@
     <a href="{% url "NewClient" %}" class="button">New client</a>
     <a href="{% url "ClientList" %}" class="button">Client list</a>
     <a href="{% url "SelectEvent" %}" class="button">Select Event</a>
+    {% endif %}
 </div>
 
 <div id="main">
