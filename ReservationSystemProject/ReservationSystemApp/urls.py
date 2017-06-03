@@ -25,5 +25,7 @@ urlpatterns = [
     url("EventDetails/(?P<pk>\d+)/", views.EventDetails.as_view(), name="EventDetails"),
     url("ListEvent", views.ListEvent.as_view(), name="ListEvent"),
     url("EventUpdate/(?P<pk>\d+)/", views.EventUpdate.as_view(), name="EventUpdate"),
-    url("SelectEvent/", views.SelectEvent, name="SelectEvent")
+    url("SelectEvent/", views.SelectEvent, name="SelectEvent"),
+    url(r'^addUser$', views.addUser,  name="addOperator"),
+    url(r'changePassword/', views.changePassword, name="changePassword"),
     ]

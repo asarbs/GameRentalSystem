@@ -15,6 +15,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from form import GameForm
 from form import GameCopyItemFormset
 from form import EventForm
+from form import UserForm
 from models import Client
 from models import Game
 from models import GameCopy
@@ -308,3 +309,18 @@ def SelectEvent(request):
         request.session['event_id'] = request.POST['slected_event']
     events = Event.objects.all()
     return render(request, "ReservationSystemApp/select_event_form.html", {"events": events})
+
+
+def addUser(request):
+    if request.method == 'POST':
+        uf = UserForm(request.POST, prefix='user')
+        if uf.is_valid():
+            user = uf.save()
+            return HttpResponseRedirect("/tc_player/addUserConfirm/")
+    else:
+        uf = UserForm(prefix='user')
+    return render(request, 'ReservationSystemApp/addUser.html', {"form": uf})
+
+
+def changePassword(request):
+    pass
