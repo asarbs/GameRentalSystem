@@ -13,6 +13,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 
+import operator
+
 from form import GameForm
 from form import GameCopyItemFormset
 from form import EventForm
@@ -237,7 +239,7 @@ def Rental(request):
         event = Event.objects.get(id=request.session['event_id'])
 
         gameCopyHistory = GameCopyHistory(gameCopy=gameCopy, state=GameCopy.STATE[0][0], user=request.user,
-                                          client=clinet, event=event)
+                                          client=clinet, event=event, game=gameCopy.game)
         gameCopyHistory.save()
 
         return HttpResponseRedirect(reverse("GameDetails", args=(gameCopy.game.id,)))
@@ -276,7 +278,7 @@ def makeReturn(request, pk):
 
     event = Event.objects.get(id=request.session['event_id'])
     gameCopyHistory = GameCopyHistory(gameCopy=gameCopy, state=GameCopy.STATE[1][0], user=request.user, client=gameCopy.client,
-                                      event=event)
+                                      event=event, game=gameCopy.game)
     gameCopyHistory.save()
 
 
@@ -383,3 +385,15 @@ def ActivateOperator(request, pk):
     user.is_active = True
     user.save()
     return HttpResponseRedirect(reverse('operatorList'))
+
+
+def statistics(request):
+    games = Game.objects.all()
+    data = []
+    for game in games:
+        count_loan = GameCopyHistory.objects.filter(game=game, state=GameCopy.STATE[0][0]).count()
+        count_return = GameCopyHistory.objects.filter(game=game, state=GameCopy.STATE[1][0]).count()
+        data.append({"game":game, "count_loan": count_loan, "count_return":count_return })
+
+    data.sort(key=operator.itemgetter('count_loan'))
+    return render(request, "ReservationSystemApp/statistics.html", {"data": data})

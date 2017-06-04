@@ -57,6 +57,7 @@ class Event(models.Model):
 
 class GameCopyHistory(models.Model):
     gameCopy = models.ForeignKey(GameCopy, verbose_name="Game Copy")
+    game = models.ForeignKey(Game, verbose_name="Game", blank=True, null=True)
     state = models.CharField(max_length=6, choices=GameCopy.STATE, default="Free", verbose_name="State")
     user = models.ForeignKey(User, verbose_name="Operator")
     client = models.ForeignKey(Client, verbose_name="Client")

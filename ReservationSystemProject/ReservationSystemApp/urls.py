@@ -31,5 +31,6 @@ urlpatterns = [
     url('changePassword/', views.changePassword, name="changePassword"),
     url('operatorList/', views.OperatorList.as_view(), name="operatorList"),
     url('deactivateOperator/(?P<pk>\d+)/', views.DeactivateOperator, name="deactivateOperator"),
-    url('activateOperator/(?P<pk>\d+)/', views.ActivateOperator, name="activateOperator")
+    url('activateOperator/(?P<pk>\d+)/', views.ActivateOperator, name="activateOperator"),
+    url('statistics/', views.statistics, name='statistics')
     ]
