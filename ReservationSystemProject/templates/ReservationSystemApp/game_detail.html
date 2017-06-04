@@ -47,6 +47,7 @@
             </td>
             <td>
                 <a href="{% url "DeleterGameCopy" pk=gamecopy.id %}?game_id={{ object.id }}" class="button">Delete</a>
+                <a href="{% url "GameCopyDetails" pk=gamecopy.id %}" class="button">Details</a>
             </td>
         </tr>
     {% endfor %}

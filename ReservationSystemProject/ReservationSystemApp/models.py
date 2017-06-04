@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -52,3 +53,12 @@ class Event(models.Model):
 
     def __unicode__(self):
         return u'{0}'.format(self.name)
+
+
+class GameCopyHistory(models.Model):
+    gameCopy = models.ForeignKey(GameCopy, verbose_name="Game Copy")
+    state = models.CharField(max_length=6, choices=GameCopy.STATE, default="Free", verbose_name="State")
+    user = models.ForeignKey(User, verbose_name="Operator")
+    client = models.ForeignKey(Client, verbose_name="Client")
+    event = models.ForeignKey(Event, verbose_name="Event")
+    dateTime = models.DateTimeField(auto_now_add=True, blank=True, editable=True)

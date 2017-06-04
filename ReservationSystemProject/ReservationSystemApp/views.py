@@ -22,6 +22,7 @@ from models import Client
 from models import Game
 from models import GameCopy
 from models import Event
+from models import GameCopyHistory
 
 
 # Create your views here.
@@ -154,6 +155,16 @@ def NewGameCopy(request):
     return HttpResponseRedirect(reverse("GameDetails", args=(request.GET['game_id'],)))
 
 
+class GameCopyDetails(LoginRequiredMixin, DetailView):
+    model = GameCopy
+
+    def get_object(self, queryset=None):
+        object = super(GameCopyDetails,self).get_object()
+        gameCopyHistory = GameCopyHistory.objects.filter(gameCopy=object)
+        object.gameCopyHistory = gameCopyHistory
+        return object
+
+
 @login_required(login_url='/login/')
 def DeleteGamesCopy(request, pk):
     GameCopy(id=pk).delete()
@@ -223,6 +234,12 @@ def Rental(request):
         gameCopy.client = clinet
         gameCopy.save()
 
+        event = Event.objects.get(id=request.session['event_id'])
+
+        gameCopyHistory = GameCopyHistory(gameCopy=gameCopy, state=GameCopy.STATE[0][0], user=request.user,
+                                          client=clinet, event=event)
+        gameCopyHistory.save()
+
         return HttpResponseRedirect(reverse("GameDetails", args=(gameCopy.game.id,)))
     return render(request, "ReservationSystemApp/Rental_form.html", {})
 
@@ -254,12 +271,23 @@ def Return(request):
 
 @login_required(login_url='/login/')
 def makeReturn(request, pk):
+
     gameCopy = GameCopy.objects.get(id=pk)
+
+    event = Event.objects.get(id=request.session['event_id'])
+    gameCopyHistory = GameCopyHistory(gameCopy=gameCopy, state=GameCopy.STATE[1][0], user=request.user, client=gameCopy.client,
+                                      event=event)
+    gameCopyHistory.save()
+
+
     gameCopy.weight = 0
     gameCopy.comments = ""
     gameCopy.state = GameCopy.STATE[1][0]
     gameCopy.client = None
     gameCopy.save()
+
+
+
     return HttpResponseRedirect(reverse("GameDetails", args=(gameCopy.game.id,)))
 
 

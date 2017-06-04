@@ -1,0 +1,45 @@
+{% extends "index.html" %}
+{% block main %}
+
+<h2>Game Copy: {{ object.game }} barcode:{{ object.barcode }} </h2>
+<br />
+<br />
+<table class="paleblue">
+    <tr>
+        <th>
+            Date and Time
+        </th>
+        <th>
+            Event
+        </th>
+        <th>
+            State
+        </th>
+        <th>
+            Operator
+        </th>
+        <th>
+            Client
+        </th>
+    </tr>
+    {% for gameCopyHist in object.gameCopyHistory %}
+    <tr class="{% cycle 'odd' 'even' %}">
+        <td>
+            {{ gameCopyHist.dateTime }}
+        </td>
+        <td>
+            {{ gameCopyHist.event }}
+        </td>
+        <td>
+            {{ gameCopyHist.state }}
+        </td>
+        <td>
+            {{ gameCopyHist.user }}
+        </td>
+        <td>
+            {{ gameCopyHist.client }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
