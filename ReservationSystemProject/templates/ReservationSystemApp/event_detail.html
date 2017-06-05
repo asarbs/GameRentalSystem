@@ -2,6 +2,42 @@
 {% block main %}
 
 <h2>Event: {{ object.name }} {{ object.date }}</h2>
-<br /><br />
+<br />
 <a href="{% url "EventUpdate" pk=object.id %}" class="button">Edit</a>
+
+<br /><br />
+<table class="paleblue">
+    <tr>
+        <th>
+            #
+        </th>
+        <th>
+            Game
+        </th>
+        <th>
+            Number of loan
+        </th>
+        <th>
+            Number of returns
+        </th>
+    </tr>
+    {% for d in object.statistics %}
+    <tr class="{% cycle 'odd' 'even' %}">
+        <td>
+            {{ forloop.counter }}
+        </td>
+        <td>
+            {{ d.game }}
+        </td>
+        <td>
+            {{ d.count_loan }}
+        </td>
+        <td>
+            {{ d.count_return }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+
 {% endblock %}

@@ -23,6 +23,7 @@
         </td>
         <td>
             <a href="{% url "EventUpdate" pk=object.id %}" class="button">Edit</a>
+            <a href="{% url "EventDetails" pk=object.id %}" class="button">Details</a>
         </td>
     </tr>
     {% endfor %}

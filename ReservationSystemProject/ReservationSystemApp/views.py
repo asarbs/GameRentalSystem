@@ -321,6 +321,20 @@ class NewEvent(LoginRequiredMixin, CreateView):
 class EventDetails(LoginRequiredMixin, DetailView):
     model = Event
 
+    def get_object(self, queryset=None):
+        object = super(EventDetails, self).get_object()
+        games = Game.objects.all()
+        data = []
+        for game in games:
+            count_loan = GameCopyHistory.objects.filter(event=object, game=game, state=GameCopy.STATE[0][0]).count()
+            count_return = GameCopyHistory.objects.filter(event=object, game=game, state=GameCopy.STATE[1][0]).count()
+            data.append({"game": game, "count_loan": count_loan, "count_return": count_return})
+
+        data.sort(key=operator.itemgetter('count_loan'))
+
+        object.statistics = data
+        return object
+
 
 class ListEvent(LoginRequiredMixin, ListView):
     model = Event
