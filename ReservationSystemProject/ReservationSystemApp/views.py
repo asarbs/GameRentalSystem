@@ -225,10 +225,14 @@ def Rental(request):
         if gameCopy.state == GameCopy.STATE[0][0]:
             errors['gameCopyBarcode_errors'].append("Game rented")
 
-        print()
         if len(errors['gameCopyBarcode_errors']) > 0 or len(errors['clientBarcode_errors']) > 0 or len(errors['gameCopyWeight_errors']) > 0:
             values.update(errors)
             return render(request, "ReservationSystemApp/Rental_form.html", values)
+
+        try:
+            event = Event.objects.get(id=request.session['event_id'])
+        except KeyError:
+            return HttpResponseRedirect(reverse("SelectEvent"))
 
         gameCopy.weight = request.POST['gameCopyWeight']
         gameCopy.comments = request.POST['comment']
@@ -236,7 +240,7 @@ def Rental(request):
         gameCopy.client = clinet
         gameCopy.save()
 
-        event = Event.objects.get(id=request.session['event_id'])
+
 
         gameCopyHistory = GameCopyHistory(gameCopy=gameCopy, state=GameCopy.STATE[0][0], user=request.user,
                                           client=clinet, event=event, game=gameCopy.game)
@@ -276,7 +280,10 @@ def makeReturn(request, pk):
 
     gameCopy = GameCopy.objects.get(id=pk)
 
-    event = Event.objects.get(id=request.session['event_id'])
+    try:
+        event = Event.objects.get(id=request.session['event_id'])
+    except KeyError:
+        return HttpResponseRedirect(reverse("SelectEvent"))
     gameCopyHistory = GameCopyHistory(gameCopy=gameCopy, state=GameCopy.STATE[1][0], user=request.user, client=gameCopy.client,
                                       event=event, game=gameCopy.game)
     gameCopyHistory.save()
