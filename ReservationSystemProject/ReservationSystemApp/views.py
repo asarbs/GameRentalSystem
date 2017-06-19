@@ -13,6 +13,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 
+from django_tables2 import RequestConfig
+from django_filters.views import FilterView
+
 import operator
 
 from form import GameForm
@@ -25,6 +28,8 @@ from models import Game
 from models import GameCopy
 from models import Event
 from models import GameCopyHistory
+from tables import GameTable
+from filters import GameFilter
 
 
 # Create your views here.
@@ -133,9 +138,21 @@ class GameDetails(LoginRequiredMixin, DetailView):
 
 
 class GameList(LoginRequiredMixin, ListView):
-    queryset = Game.objects.order_by("number")
     model = Game
+    filter_class = GameFilter
 
+    def get_queryset(self, **kwargs):
+        return Game.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(GameList, self).get_context_data(**kwargs)
+        filter = GameFilter(self.request.GET, queryset=self.get_queryset(**kwargs))
+        table = GameTable(filter.qs)
+        RequestConfig(self.request, paginate={'per_page': 30}).configure(table)
+        context['filter'] = filter
+        context['table2Render'] = table
+        return context
+    
 
 class GameEdit(LoginRequiredMixin, UpdateView):
     model = Game
