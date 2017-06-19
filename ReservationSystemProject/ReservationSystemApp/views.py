@@ -152,7 +152,7 @@ class GameList(LoginRequiredMixin, ListView):
         context['filter'] = filter
         context['table2Render'] = table
         return context
-    
+
 
 class GameEdit(LoginRequiredMixin, UpdateView):
     model = Game
