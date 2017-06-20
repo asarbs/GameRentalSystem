@@ -29,7 +29,9 @@ from models import GameCopy
 from models import Event
 from models import GameCopyHistory
 from tables import GameTable
+from tables import GameCopyTable
 from filters import GameFilter
+from filters import GameCopyFilter
 
 
 # Create your views here.
@@ -292,6 +294,22 @@ def Return(request):
     return render(request, "ReservationSystemApp/Return_form.html", {})
 
 
+def GameCopyReturn(request, pk):
+    values = {"gameCopyBarcode_errors": [],
+              "gameCopyBarcode_val": [],
+              "gameCopy": None}
+    try:
+        gameCopy = GameCopy.objects.get(id=pk)
+    except ObjectDoesNotExist as x:
+        values['gameCopyBarcode_errors'].append("Game copy not found")
+        return render(request, "ReservationSystemApp/Return_form.html", values)
+    if gameCopy.state == GameCopy.STATE[1][0]:
+        values['gameCopyBarcode_errors'].append("Game not rented")
+        return render(request, "ReservationSystemApp/Return_form.html",values)
+
+    values['gameCopy'] = gameCopy
+    return render(request, "ReservationSystemApp/Return_form.html", values)
+
 @login_required(login_url='/login/')
 def makeReturn(request, pk):
 
@@ -431,7 +449,25 @@ def statistics(request):
     for game in games:
         count_loan = GameCopyHistory.objects.filter(game=game, state=GameCopy.STATE[0][0]).count()
         count_return = GameCopyHistory.objects.filter(game=game, state=GameCopy.STATE[1][0]).count()
-        data.append({"game":game, "count_loan": count_loan, "count_return":count_return })
+        data.append({"game": game, "count_loan": count_loan, "count_return": count_return})
 
     data.sort(key=operator.itemgetter('count_loan'))
     return render(request, "ReservationSystemApp/statistics.html", {"data": data})
+
+
+class RentalList(LoginRequiredMixin, ListView):
+    model = GameCopy
+    filter_class = GameCopyFilter
+
+    def get_queryset(self, **kwargs):
+        qs = GameCopy.objects.filter(state=GameCopy.STATE[0][0])
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super(RentalList, self).get_context_data(**kwargs)
+        myFilter = GameCopyFilter(self.request.GET, queryset=self.get_queryset(**kwargs))
+        table = GameCopyTable(myFilter.qs)
+        RequestConfig(self.request, paginate={'per_page': 30}).configure(table)
+        context['filter'] = myFilter
+        context['table2Render'] = table
+        return context

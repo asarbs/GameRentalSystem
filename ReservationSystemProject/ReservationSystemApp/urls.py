@@ -22,6 +22,7 @@ urlpatterns = [
     url("Rental/", views.Rental, name="Rental"),
     url("makeReturn/(?P<pk>\d+)/", views.makeReturn, name="makeReturn"),
     url("formReturn/", views.Return, name="Return"),
+    url("GameCopyReturn/(?P<pk>\d+)/", views.GameCopyReturn, name="GameCopyReturn"),
     url("NewEvent/", views.NewEvent.as_view(), name="NewEvent"),
     url("EventDetails/(?P<pk>\d+)/", views.EventDetails.as_view(), name="EventDetails"),
     url("ListEvent", views.ListEvent.as_view(), name="ListEvent"),
@@ -32,5 +33,6 @@ urlpatterns = [
     url('operatorList/', views.OperatorList.as_view(), name="operatorList"),
     url('deactivateOperator/(?P<pk>\d+)/', views.DeactivateOperator, name="deactivateOperator"),
     url('activateOperator/(?P<pk>\d+)/', views.ActivateOperator, name="activateOperator"),
-    url('statistics/', views.statistics, name='statistics')
+    url('statistics/', views.statistics, name='statistics'),
+    url('RentalList/', views.RentalList.as_view(), name='RentalList')
     ]
