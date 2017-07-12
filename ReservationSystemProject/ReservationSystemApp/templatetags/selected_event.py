@@ -27,6 +27,9 @@ def login(context, user):
 
 @register.simple_tag(takes_context=True)
 def make_menu(context, user):
+    if user.is_anonymous():
+        return ""
+
     menu_data = []
 
     if user.is_superuser:
