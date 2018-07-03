@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% block main %}
-<h2>Nowy klient</h2>
-<form action="{% url "NewClient" %}" method="POST">
+<h2>Edytuj kategorię opłat</h2>
+<form action="{% url "EditPaymentCategories" pk=object.id  %}" method="POST">
   {% csrf_token %}
     <table class="paleblue">
     {{ form }}

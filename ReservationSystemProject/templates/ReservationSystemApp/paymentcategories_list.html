@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+{% block main %}
+
+<table class="paleblue">
+    <tr>
+        <th>
+            Nazwa
+        </th>
+        <th>
+            Cena
+        </th>
+        <th>
+            akcje
+        </th>
+    </tr>
+    {% for object in object_list %}
+    <tr tr class="{% cycle 'odd' 'even' %}">
+        <td>
+            {{ object.name }}
+        </td>
+        <td>
+            {{ object.cost }}
+        </td>
+        <td>
+            <a href="{% url "EditPaymentCategories" pk=object.id %}" class="button">Edytuj</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

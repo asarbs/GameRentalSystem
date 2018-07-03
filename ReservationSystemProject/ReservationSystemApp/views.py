@@ -29,6 +29,7 @@ from models import Game
 from models import GameCopy
 from models import Event
 from models import GameCopyHistory
+from models import PaymentCategories
 from tables import GameTable
 from tables import GameCopyTable
 from filters import GameFilter
@@ -484,3 +485,23 @@ class RentalList(LoginRequiredMixin, ListView):
         context['filter'] = myFilter
         context['table2Render'] = table
         return context
+
+
+class PaymentCategoriesList(LoginRequiredMixin, ListView):
+    model = PaymentCategories
+
+
+class NewPaymentCategories(LoginRequiredMixin, CreateView):
+    model = PaymentCategories
+    fields = ('name', 'cost')
+
+    def get_success_url(self):
+        return reverse("EditPaymentCategories", args=(self.object.id,))
+
+class UpdatePaymentCategories(LoginRequiredMixin, UpdateView):
+    model = PaymentCategories
+    fields = ('name', 'cost')
+    template_name_suffix = '_update_form'
+
+    def get_success_url(self):
+        return reverse("EditPaymentCategories", args=(self.object.id,))

@@ -34,5 +34,8 @@ urlpatterns = [
     url('deactivateOperator/(?P<pk>\d+)/', views.DeactivateOperator, name="deactivateOperator"),
     url('activateOperator/(?P<pk>\d+)/', views.ActivateOperator, name="activateOperator"),
     url('statistics/', views.statistics, name='statistics'),
-    url('RentalList/', views.RentalList.as_view(), name='RentalList')
+    url('RentalList/', views.RentalList.as_view(), name='RentalList'),
+    url('AddPaymentCategories/', views.NewPaymentCategories.as_view(), name='AddPaymentCategories'),
+    url('EditPaymentCategories/(?P<pk>\d+)/', views.UpdatePaymentCategories.as_view(), name='EditPaymentCategories'),
+    url('PaymentCategories/', views.PaymentCategoriesList.as_view(), name='PaymentCategories')
     ]

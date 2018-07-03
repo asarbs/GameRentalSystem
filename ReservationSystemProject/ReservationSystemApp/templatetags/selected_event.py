@@ -38,14 +38,17 @@ def make_menu(context, user):
         menu_data.append([reverse("operatorList"), u'List operatorów'])
         menu_data.append([reverse("ListEvent"), u'List wydarzeń'])
         menu_data.append([reverse("GamesList"), u'Lista gier'])
+        menu_data.append([reverse("PaymentCategories"), u'Kategorie opłat'])
 
-    menu_data.append([reverse("Rental"), u'Nowe wyporzyczenie'])
+    menu_data.append([reverse("Rental"), u'Nowe wypożyczenie'])
     menu_data.append([reverse("Return"), u'Zwrot egzemplarza gry'])
-    menu_data.append([reverse("RentalList"), u'Lista wyporzyczeń'])
+    menu_data.append([reverse("RentalList"), u'Lista wypożyczeń'])
     menu_data.append([reverse("NewClient"), u'Nowy klient'])
     menu_data.append([reverse("ClientList"), u'Lista klientów'])
 
     menu_data.append([reverse("SelectEvent"), u'Wybierz wydarzenie'])
+
+
 
     if user.is_superuser:
         menu_data.append([reverse("statistics"), u'Statystyki'])
@@ -61,6 +64,7 @@ def make_menu2(context, user):
     menu2_Operator(context, menu_data)
     menu2_Event(context, menu_data)
     menu2_Game(context, menu_data)
+    menu2_PaymentCategories(context, menu_data)
 
     menu = [u'<a href="{0}"  class="button">{1}</a>'.format(url[0], url[1]) for url in menu_data]
     return mark_safe(' '.join(menu))
@@ -91,4 +95,8 @@ def menu2_Event(context, menu_data):
     if any(s in path for s in urls_list):
         menu_data.append([reverse("NewEvent"), u'Nowe wydarzenie'])
 
+
+def menu2_PaymentCategories(context, menu_data):
+    if context.request.get_full_path() == reverse("PaymentCategories"):
+        menu_data.append([reverse("AddPaymentCategories"), u'Dodaj nową kategorię opłat'])
 
