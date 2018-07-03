@@ -1,7 +1,10 @@
 {% extends "index.html" %}
 {% block main %}
 
-<h2>Game: #{{object.number}} {{ object.name }}</h2>
+<h2>Gra: #{{object.number}} {{ object.name }}</h2>
+<p>
+    Kategoria cenowa: {{ object.paymentCategory }}
+</p>
 <br />
 <a href="{% url "GameUpdate" pk=object.id  %}" class="button">Edit</a>
 <a href="{% url "DeleteGame" pk=object.id  %}" class="button">Delete</a>
@@ -28,6 +31,9 @@
             Data wyporzyczenia / zwrotu
         </th>
         <th>
+            Cena:
+        </th>
+        <th>
             Akcje
         </th>
     </tr>
@@ -50,6 +56,9 @@
             </td>
             <td>
                 {{ gamecopy.rentalDateTime|default_if_none:"--" }} / {{ gamecopy.returnDateTime|default_if_none:"--" }}
+            </td>
+            <td>
+                {{ gamecopy.price|default_if_none:"--" }}
             </td>
             <td>
                 <a href="{% url "DeleterGameCopy" pk=gamecopy.id %}?game_id={{ object.id }}" class="button">Usuń</a>

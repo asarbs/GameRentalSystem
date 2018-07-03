@@ -6,6 +6,16 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class PaymentCategories(models.Model):
+    name = models.CharField(max_length=256, verbose_name="Nazwa")
+    cost = models.IntegerField(verbose_name="Cena za dzień")
+
+    def __str__(self):
+        return u'{0}'.format(self.name)
+
+    def __unicode__(self):
+        return u'{0}'.format(self.name)
+
 
 class Client(models.Model):
     GENDER = (("Men", "Men"),
@@ -26,6 +36,7 @@ class Client(models.Model):
 class Game(models.Model):
     name = models.CharField(max_length=256, verbose_name="Nazwa")
     number = models.IntegerField(verbose_name="Pozycja na liście", default="0")
+    paymentCategory = models.ForeignKey(PaymentCategories, verbose_name="Kategoria cenowa", default='1')
 
     def __str__(self):
         return u'{0}'.format(self.name)
@@ -44,6 +55,16 @@ class GameCopy(models.Model):
     client = models.ForeignKey(Client, verbose_name="Client", blank=True, null=True)
     rentalDateTime = models.DateTimeField(blank=True, editable=True, null=True)
     returnDateTime = models.DateTimeField(blank=True, editable=True, null=True)
+    cost = models.IntegerField(verbose_name="Cena", default="0")
+
+    def calculatePrice(self):
+        if self.returnDateTime == None and self.rentalDateTime == None:
+            return None
+        else:
+            timeDiff = self.returnDateTime - self.rentalDateTime
+            price = timeDiff.days * self.cost
+            return str(timeDiff.days) + "dni * " + str(self.cost) + u'zł = ' + str(price) + u'zł'
+
 
 
 class Event(models.Model):
@@ -65,14 +86,3 @@ class GameCopyHistory(models.Model):
     client = models.ForeignKey(Client, verbose_name="Client")
     event = models.ForeignKey(Event, verbose_name="Event")
     dateTime = models.DateTimeField(auto_now_add=True, blank=True, editable=True)
-
-
-class PaymentCategories(models.Model):
-    name = models.CharField(max_length=256, verbose_name="Nazwa")
-    cost = models.IntegerField(verbose_name="Cena za dzień")
-
-    def __str__(self):
-        return u'{0}'.format(self.name)
-
-    def __unicode__(self):
-        return u'{0}'.format(self.name)

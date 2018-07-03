@@ -136,9 +136,20 @@ class GameDetails(LoginRequiredMixin, DetailView):
     def get_object(self, queryset=None):
         object = super(GameDetails,self).get_object()
         gameCopy = GameCopy.objects.filter(game=object)
+        self.calculatePrice(gameCopy)
         object.gameCopy = gameCopy
         object.gameCopyItemFormset = GameCopyItemFormset()
         return object
+
+    def calculatePrice(self, gameCopy):
+        for gc in gameCopy:
+            if gc.returnDateTime == None and gc.rentalDateTime == None:
+                gc.price = None
+            else:
+                print(gc.returnDateTime, gc.rentalDateTime)
+                timeDiff = gc.returnDateTime - gc.rentalDateTime
+                price = timeDiff.days * gc.cost
+                gc.price = str(timeDiff.days) + " dni * " + str(gc.cost) + u' zł = ' + str(price)
 
 
 class GameList(LoginRequiredMixin, ListView):
@@ -160,7 +171,7 @@ class GameList(LoginRequiredMixin, ListView):
 
 class GameEdit(LoginRequiredMixin, UpdateView):
     model = Game
-    fields = ['name', 'number']
+    fields = ['name', 'number', 'paymentCategory']
     template_name_suffix = '_update_form'
 
     def get_success_url(self):
@@ -268,6 +279,7 @@ def Rental(request):
         gameCopy.client = clinet
         gameCopy.rentalDateTime = now
         gameCopy.returnDateTime = now + datetime.timedelta(days=int(request.POST['numberOfRentalDays']))
+        gameCopy.cost = gameCopy.game.paymentCategory.cost
         gameCopy.save()
 
 

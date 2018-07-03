@@ -22,9 +22,10 @@ class GameCopyTable(tables.Table):
     client = tables.Column("Klient")
     rentalDateTime = tables.Column("Data wypożyczenia")
     returnDateTime = tables.Column("Data zwrotu")
+    cost = tables.Column("Cena", accessor=A('calculatePrice'),)
 
     class Meta:
         model = GameCopy
         attrs = {"class": "paleblue"}
-        fields = ['game', 'barcode', 'client', "rentalDateTime", "returnDateTime"]  # fields to display
+        fields = ['game', 'barcode', 'client', "rentalDateTime", "returnDateTime", 'cost']  # fields to display
 

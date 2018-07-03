@@ -16,10 +16,11 @@ from models import Event
 class GameForm(ModelForm):
   class Meta:
     model = Game
-    fields = ['name', 'number']
+    fields = ['name', 'number', 'paymentCategory']
     labels = {
         'name': 'Nazwa',
         'number': u'Pozycja na liście',
+        'paymentCategory': u'Kategoria cenowa',
     }
 
 GameCopyItemFormset = inlineformset_factory(Game,
