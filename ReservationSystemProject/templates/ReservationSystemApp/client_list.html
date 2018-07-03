@@ -4,19 +4,19 @@
 <table class="paleblue">
     <tr>
         <th>
-            Name and Surname
+            Imię i nazwisko
         </th>
         <th>
-            Age
+            wiek
         </th>
         <th>
-            Gender
+            płeć
         </th>
         <th>
-            Barcode
+            kod kreskowy
         </th>
         <th>
-            Actions
+            akcje
         </th>
     </tr>
     {% for object in object_list %}
@@ -34,8 +34,8 @@
             {{ object.barcode }}
         </td>
         <td>
-            <a href="{% url "DeleteClient" pk=object.id %}" class="button">Delete</a>
-            <a href="{% url "ClientEdit" pk=object.id %}" class="button">Edit</a>
+            <a href="{% url "DeleteClient" pk=object.id %}" class="button">Usuń</a>
+            <a href="{% url "ClientEdit" pk=object.id %}" class="button">Edytuj</a>
         </td>
     </tr>
     {% endfor %}

@@ -238,14 +238,14 @@ def Rental(request):
         try:
             gameCopy = GameCopy.objects.get(barcode=request.POST['gameCopyBarcode'])
         except ObjectDoesNotExist as x:
-            errors['gameCopyBarcode_errors'].append("Copy not found") #TODO: translation
+            errors['gameCopyBarcode_errors'].append(u'Egzemparz nie znaleziony')
         try:
             clinet = Client.objects.get(barcode=request.POST['clientBarcode'])
         except ObjectDoesNotExist as x:
-            errors['clientBarcode_errors'].append("Client not found") #TODO: translation
+            errors['clientBarcode_errors'].append(u'Nie znaleziono takiego klienta')
 
         if gameCopy.state == GameCopy.STATE[0][0]:
-            errors['gameCopyBarcode_errors'].append("Game rented") #TODO: translation
+            errors['gameCopyBarcode_errors'].append(u'Egzemplarz wypożyczony')
 
         if(int(request.POST['numberOfRentalDays']) < 1 or int(request.POST['numberOfRentalDays']) > 50):
             errors['numberOfRentalDays_errors'].append(u'Nie prawidłowa liczba dni wyporzyczenia')
@@ -292,11 +292,11 @@ def Return(request):
         try:
             gameCopy = GameCopy.objects.get(barcode=request.POST['gameCopyBarcode'])
         except ObjectDoesNotExist as x:
-            values['gameCopyBarcode_errors'].append("Game copy not found")
+            values['gameCopyBarcode_errors'].append(u'nie znaleziono egzemplarza gry')
             return render(request, "ReservationSystemApp/Return_form.html",
                           values)
         if gameCopy.state == GameCopy.STATE[1][0]:
-            values['gameCopyBarcode_errors'].append("Game not rented")
+            values['gameCopyBarcode_errors'].append(u'Egzemplarz nie został wypożyczony')
             return render(request, "ReservationSystemApp/Return_form.html",
                           values)
 

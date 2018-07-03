@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% block main %}
 
-<h2>Return</h2>
+<h2>Zwrot</h2>
 
 {% if gameCopy == None %}
 <form action="{% url "Return" %}" method="post">
@@ -19,11 +19,11 @@
 </form>
 {% endif %}
 {% if gameCopy != None %}
-<h3>Game copy details</h3>
-<p><b>Title:</b> {{ gameCopy.game }}</p>
-<p><b>Client:</b> {{ gameCopy.client }}</p>
-<p><b>Weight:</b> {{ gameCopy.weight }}</p>
-<p><b>Comment:</b> {{ gameCopy.comments }}</p>
+<h3>Szczegóły egzemplarza</h3>
+<p><b>Tytuł:</b> {{ gameCopy.game }}</p>
+<p><b>Klient:</b> {{ gameCopy.client }}</p>
+<p><b>Waga:</b> {{ gameCopy.weight }}</p>
+<p><b>Komentarz:</b> {{ gameCopy.comments }}</p>
 <br />
 <a href="{% url "makeReturn" pk=gameCopy.id %}" class="button">Save return</a>
 {% endif %}

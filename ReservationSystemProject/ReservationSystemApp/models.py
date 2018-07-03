@@ -10,11 +10,11 @@ from django.contrib.auth.models import User
 class Client(models.Model):
     GENDER = (("Men", "Men"),
              ("Woman", "Women"))
-    name = models.CharField(max_length=256, verbose_name="Name")
-    surname = models.CharField(max_length=256, verbose_name="Surname")
-    age = models.IntegerField(verbose_name="Age")
-    gender = models.CharField(max_length=5, choices=GENDER, verbose_name="Gender", default="Men")
-    barcode = models.IntegerField(verbose_name="Barcode", default="0", unique=True)
+    name = models.CharField(max_length=256, verbose_name="Imię")
+    surname = models.CharField(max_length=256, verbose_name="Nazwisko")
+    age = models.IntegerField(verbose_name="wiek", null=True, default="0")
+    gender = models.CharField(max_length=5, choices=GENDER, verbose_name=u'Płeć', default="Men", null=True)
+    barcode = models.IntegerField(verbose_name="kod kreskowy", default="0", unique=True)
 
     def __str__(self):
         return u'{0} {1}'.format(self.name, self.surname)

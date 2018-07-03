@@ -1,12 +1,12 @@
 {% extends "index.html" %}
 {% block main %}
-<h2>New Client</h2>
+<h2>Edytuj klienta</h2>
 <form action="{% url "ClientEdit" pk=object.id  %}" method="POST">
   {% csrf_token %}
     <table class="paleblue">
     {{ form }}
     </table>
-  <input id="save_contact" type="submit" value="save" />
+  <input id="save_contact" type="submit" value="zapisz" />
 </form>
 
 {% endblock %}
