@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% block main %}
 
-<h2>Event: {{ object.name }} {{ object.date }}</h2>
+<h2>Wydarzenie: {{ object.name }} {{ object.date }}</h2>
 <br />
 <a href="{% url "EventUpdate" pk=object.id %}" class="button">Edit</a>
 
@@ -12,13 +12,13 @@
             #
         </th>
         <th>
-            Game
+            Gra
         </th>
         <th>
-            Number of loan
+            Liczba wyporzyczeń
         </th>
         <th>
-            Number of returns
+            Liczba zwrotów
         </th>
     </tr>
     {% for d in object.statistics %}

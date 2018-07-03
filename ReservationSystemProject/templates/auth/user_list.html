@@ -7,19 +7,19 @@
             Username
         </th>
         <th>
-            First Name
+            Imię
         </th>
         <th>
-            Last Name
+            Nazwisko
         </th>
         <th>
             email
         </th>
         <th>
-            is_active
+            Czy aktywny?
         </th>
         <th>
-            Actions
+            Akcje
         </th>
 
     </tr>
@@ -38,11 +38,11 @@
             {{ object.email }}
         </td>
         <td>
-            {{ object.is_active }}
+            {{ object.is_active|yesno:"Aktywny,Nie aktywny"  }}
         </td>
         <td>
-            <a href="{% url "deactivateOperator" pk=object.id %}" class="button">Deactivate</a>
-            <a href="{% url "activateOperator" pk=object.id %}" class="button">Activate</a>
+            <a href="{% url "deactivateOperator" pk=object.id %}" class="button">Deaktywuj</a>
+            <a href="{% url "activateOperator" pk=object.id %}" class="button">Aktywuj</a>
         </td>
     </tr>
     {% endfor %}

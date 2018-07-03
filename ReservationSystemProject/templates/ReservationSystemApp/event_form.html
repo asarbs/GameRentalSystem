@@ -1,6 +1,6 @@
 {% extends "index.html" %}
 {% block main %}
-<h2>New Client</h2>
+<h2>Nowe wydarzenie</h2>
 <form action="{% url "NewEvent" %}" method="POST">
   {% csrf_token %}
     <table class="paleblue">

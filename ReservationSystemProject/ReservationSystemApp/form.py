@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.forms import TextInput
 from django.forms import DateInput
 from django.forms import ModelForm
@@ -16,11 +17,16 @@ class GameForm(ModelForm):
   class Meta:
     model = Game
     fields = ['name', 'number']
+    labels = {
+        'name': 'Nazwa',
+        'number': u'Pozycja na liście',
+    }
 
 GameCopyItemFormset = inlineformset_factory(Game,
                                             GameCopy,
                                             form=GameForm,
                                             fields=('barcode', 'weight', 'comments', 'state'),
+                                            labels={'barcode': u'Kod kreskowy', 'weight': u'Waga', 'comments': u'Komenatrz', 'state': u'Status'},
                                             can_delete=False,
                                             extra=1)
 
@@ -33,6 +39,10 @@ class EventForm(ModelForm):
   class Meta:
     model = Event
     fields = ['name', 'date']
+    labels = {
+        'name': 'Nazwa',
+        'date': 'Data',
+    }
     widgets = {
         'name': TextInput(),
         'date': DateInput()
@@ -54,8 +64,8 @@ class UserForm(ModelForm):
         return user
 
 class ChangePasswordForm(Form):
-    new_password = CharField(widget=PasswordInput(), label="New Password")
-    new_password_confirm = CharField(widget=PasswordInput(), label="Confirm")
+    new_password = CharField(widget=PasswordInput(), label=u'Nowe hasło')
+    new_password_confirm = CharField(widget=PasswordInput(), label="Zapisz")
 
     def __init__(self, user, *args, **kwargs):
         super(ChangePasswordForm, self).__init__(*args, **kwargs)

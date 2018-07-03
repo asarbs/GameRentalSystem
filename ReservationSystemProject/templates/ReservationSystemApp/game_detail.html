@@ -10,22 +10,22 @@
 <table class="paleblue">
     <tr>
         <th>
-            Barcode
+            Kod kreskowy
         </th>
         <th>
-            Weight
+            Waga
         </th>
         <th>
-            Comment
+            Komentarz
         </th>
         <th>
-            State
+            Status
         </th>
         <th>
-            Client
+            Klient
         </th>
         <th>
-            Action
+            Akcje
         </th>
     </tr>
     {% for gamecopy in object.gameCopy %}
@@ -46,8 +46,8 @@
                 {{ gamecopy.client|default_if_none:"" }}
             </td>
             <td>
-                <a href="{% url "DeleterGameCopy" pk=gamecopy.id %}?game_id={{ object.id }}" class="button">Delete</a>
-                <a href="{% url "GameCopyDetails" pk=gamecopy.id %}" class="button">Details</a>
+                <a href="{% url "DeleterGameCopy" pk=gamecopy.id %}?game_id={{ object.id }}" class="button">Usuń</a>
+                <a href="{% url "GameCopyDetails" pk=gamecopy.id %}" class="button">Szczegóły</a>
             </td>
         </tr>
     {% endfor %}

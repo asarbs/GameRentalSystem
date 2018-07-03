@@ -1,12 +1,12 @@
 {% extends "index.html" %}
 {% block main %}
 
-<h2>Rental</h2>
+<h2>Wypożyczenie</h2>
 
 <form action="{% url "Rental" %}" method="post">
     {% csrf_token %}
     <p>
-        <label for="gameCopyBarcode">Game Copy barcode:</label>
+        <label for="gameCopyBarcode">Kod kreskowy egzemparza gry:</label>
         <input type="text" name="gameCopyBarcode" id="gameCopyBarcode" value="{{ gameCopyBarcode_val }}" />
         <ul class="error_list">
         {% for error in gameCopyBarcode_errors %}
@@ -15,7 +15,7 @@
         </ul>
     </p>
     <p>
-        <label for="clientBarcode">Client barcode:</label>
+        <label for="clientBarcode">Kod kreskowy karty klienta:</label>
         <input type="text" name="clientBarcode" id="clientBarcode" value="{{ clientBarcode_val }}"/>
         <ul class="error_list">
         {% for error in clientBarcode_errors %}
@@ -24,11 +24,11 @@
         </ul>
     </p>
     <p>
-        <label for="comment">Comment:</label>
+        <label for="comment">Komentarz:</label>
         <textarea name="comment" id="comment">{{ comment_val }}</textarea>
     </p>
     <p>
-        <label for="gameCopyWeight">Game Copy weight:</label>
+        <label for="gameCopyWeight">Waga egzemplarza gre:</label>
         <input type="text" name="gameCopyWeight" id="gameCopyWeight" value="{{ gameCopyWeight_val }}"/>
         <ul class="error_list">
         {% for error in gameCopyWeight_errors %}
@@ -36,7 +36,7 @@
         {% endfor %}
         </ul>
     </p>
-    <input type="submit" value="Submit" />
+    <input type="submit" value="Zapisz" />
 </form>
 
 {% endblock %}

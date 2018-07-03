@@ -24,8 +24,8 @@ class Client(models.Model):
 
 
 class Game(models.Model):
-    name = models.CharField(max_length=256, verbose_name="Name")
-    number = models.IntegerField(verbose_name="Number on list", default="0")
+    name = models.CharField(max_length=256, verbose_name="Nazwa")
+    number = models.IntegerField(verbose_name="Pozycja na liście", default="0")
 
     def __str__(self):
         return u'{0}'.format(self.name)

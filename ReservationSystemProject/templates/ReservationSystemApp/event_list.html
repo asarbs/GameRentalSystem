@@ -4,13 +4,13 @@
 <table class="paleblue">
     <tr>
         <th>
-            Name
+            Nazwa
         </th>
         <th>
-            Date
+            Data
         </th>
         <th>
-            Actions
+            Akcje
         </th>
     </tr>
     {% for object in object_list %}
@@ -22,8 +22,8 @@
             {{ object.date }}
         </td>
         <td>
-            <a href="{% url "EventUpdate" pk=object.id %}" class="button">Edit</a>
-            <a href="{% url "EventDetails" pk=object.id %}" class="button">Details</a>
+            <a href="{% url "EventUpdate" pk=object.id %}" class="button">Edytuj</a>
+            <a href="{% url "EventDetails" pk=object.id %}" class="button">Szczegóły</a>
         </td>
     </tr>
     {% endfor %}
