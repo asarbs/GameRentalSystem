@@ -14,3 +14,4 @@ class GameCopyFilter(django_filters.FilterSet):
     class Meta:
         model = GameCopy
         fields = ['barcode']
+

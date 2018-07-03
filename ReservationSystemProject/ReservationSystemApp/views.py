@@ -17,6 +17,7 @@ from django_tables2 import RequestConfig
 from django_filters.views import FilterView
 
 import operator
+import datetime
 
 from form import GameForm
 from form import GameCopyItemFormset
@@ -223,10 +224,12 @@ def Rental(request):
         values = {"gameCopyBarcode_val": request.POST['gameCopyBarcode'],
                   "clientBarcode_val": request.POST['clientBarcode'],
                   "comment_val": request.POST['comment'],
-                  "gameCopyWeight_val":  request.POST['gameCopyWeight']}
+                  "gameCopyWeight_val":  request.POST['gameCopyWeight'],
+                  "numberOfRentalDays_val": request.POST['numberOfRentalDays']}
         errors = {"gameCopyBarcode_errors": [],
                   "clientBarcode_errors": [],
-                  "gameCopyWeight_errors": []}
+                  "gameCopyWeight_errors": [],
+                  "numberOfRentalDays_errors": []}
 
         if checkIfBarcodesAreEmpty(errors, request):
             values.update(errors)
@@ -235,14 +238,18 @@ def Rental(request):
         try:
             gameCopy = GameCopy.objects.get(barcode=request.POST['gameCopyBarcode'])
         except ObjectDoesNotExist as x:
-            errors['gameCopyBarcode_errors'].append("Copy not found")
+            errors['gameCopyBarcode_errors'].append("Copy not found") #TODO: translation
         try:
             clinet = Client.objects.get(barcode=request.POST['clientBarcode'])
         except ObjectDoesNotExist as x:
-            errors['clientBarcode_errors'].append("Client not found")
+            errors['clientBarcode_errors'].append("Client not found") #TODO: translation
 
         if gameCopy.state == GameCopy.STATE[0][0]:
-            errors['gameCopyBarcode_errors'].append("Game rented")
+            errors['gameCopyBarcode_errors'].append("Game rented") #TODO: translation
+
+        if(int(request.POST['numberOfRentalDays']) < 1 or int(request.POST['numberOfRentalDays']) > 50):
+            errors['numberOfRentalDays_errors'].append(u'Nie prawidłowa liczba dni wyporzyczenia')
+
 
         if len(errors['gameCopyBarcode_errors']) > 0 or len(errors['clientBarcode_errors']) > 0 or len(errors['gameCopyWeight_errors']) > 0:
             values.update(errors)
@@ -253,10 +260,13 @@ def Rental(request):
         except KeyError:
             return HttpResponseRedirect(reverse("SelectEvent"))
 
+        now = datetime.datetime.now()
         gameCopy.weight = request.POST['gameCopyWeight']
         gameCopy.comments = request.POST['comment']
         gameCopy.state = GameCopy.STATE[0][0]
         gameCopy.client = clinet
+        gameCopy.rentalDateTime = now
+        gameCopy.returnDateTime = now + datetime.timedelta(days=int(request.POST['numberOfRentalDays']))
         gameCopy.save()
 
 
@@ -266,7 +276,8 @@ def Rental(request):
         gameCopyHistory.save()
 
         return HttpResponseRedirect(reverse("GameDetails", args=(gameCopy.game.id,)))
-    return render(request, "ReservationSystemApp/Rental_form.html", {})
+
+    return render(request, "ReservationSystemApp/Rental_form.html", {'numberOfRentalDays_val': None})
 
 
 @login_required(login_url='/login/')
@@ -328,6 +339,8 @@ def makeReturn(request, pk):
     gameCopy.comments = ""
     gameCopy.state = GameCopy.STATE[1][0]
     gameCopy.client = None
+    gameCopy.rentalDateTime = None
+    gameCopy.returnDateTime = None
     gameCopy.save()
 
 

@@ -25,6 +25,9 @@
             Klient
         </th>
         <th>
+            Data wyporzyczenia / zwrotu
+        </th>
+        <th>
             Akcje
         </th>
     </tr>
@@ -44,6 +47,9 @@
             </td>
             <td>
                 {{ gamecopy.client|default_if_none:"" }}
+            </td>
+            <td>
+                {{ gamecopy.rentalDateTime|default_if_none:"--" }} / {{ gamecopy.returnDateTime|default_if_none:"--" }}
             </td>
             <td>
                 <a href="{% url "DeleterGameCopy" pk=gamecopy.id %}?game_id={{ object.id }}" class="button">Usuń</a>

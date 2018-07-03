@@ -42,6 +42,8 @@ class GameCopy(models.Model):
     state = models.CharField(max_length=6, choices=STATE, default="Free", verbose_name="State")
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, verbose_name="Client", blank=True, null=True)
+    rentalDateTime = models.DateTimeField(blank=True, editable=True, null=True)
+    returnDateTime = models.DateTimeField(blank=True, editable=True, null=True)
 
 
 class Event(models.Model):
@@ -63,3 +65,8 @@ class GameCopyHistory(models.Model):
     client = models.ForeignKey(Client, verbose_name="Client")
     event = models.ForeignKey(Event, verbose_name="Event")
     dateTime = models.DateTimeField(auto_now_add=True, blank=True, editable=True)
+
+
+class PaymentCategories(models.Model):
+    name = models.CharField(max_length=256, verbose_name="Nazwa")
+    cost = models.IntegerField(verbose_name="Cena za dzień")

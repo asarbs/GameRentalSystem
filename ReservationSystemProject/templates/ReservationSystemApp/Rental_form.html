@@ -36,6 +36,15 @@
         {% endfor %}
         </ul>
     </p>
+    <p>
+        <label for="gameCopyWeight">Ilość dni wypożyczenia:</label>
+        <input type="text" name="numberOfRentalDays" id="numberOfRentalDays" value="{{ numberOfRentalDays_val|default_if_none:"3" }}"/>
+        <ul class="error_list">
+        {% for error in numberOfRentalDays_errors %}
+            <li class="error">{{ error }}</li>
+        {% endfor %}
+        </ul>
+    </p>
     <input type="submit" value="Zapisz" />
 </form>
 

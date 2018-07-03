@@ -16,9 +16,15 @@ class GameTable(tables.Table):
 
 
 class GameCopyTable(tables.Table):
-    edit = tables.LinkColumn('GameCopyReturn', args=[A('pk')], text="Return", attrs={'a': {'class': "button"}})
+    edit = tables.LinkColumn('GameCopyReturn', args=[A('pk')], text="Zwrot", attrs={'a': {'class': "button"}})
+    game = tables.Column("Gra")
+    barcode = tables.Column("Kod kreskowy egzemparza gry")
+    client = tables.Column("Klient")
+    rentalDateTime = tables.Column("Data wypożyczenia")
+    returnDateTime = tables.Column("Data zwrotu")
+
     class Meta:
         model = GameCopy
         attrs = {"class": "paleblue"}
-        fields = ['game', 'barcode', 'client']  # fields to display
+        fields = ['game', 'barcode', 'client', "rentalDateTime", "returnDateTime"]  # fields to display
 
